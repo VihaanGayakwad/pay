@@ -6,6 +6,24 @@
     /* Make background white on the landing page */
     body {
       background-color: white;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; /* Prevent scrollbars */
+    }
+
+    #videoContainer {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: none; /* Hidden until video plays */
+    }
+
+    iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
     }
   </style>
 </head>
@@ -17,7 +35,7 @@
   </div>
   <button id="payButton" style="display: none;" onclick="pay()">Clic tu pay</button>
 
-  <div id="videoContainer" style="display: none;">
+  <div id="videoContainer">
     <!-- Embedded video will be inserted here -->
   </div>
 
@@ -33,7 +51,7 @@
 
     function pay() {
       var videoContainer = document.getElementById('videoContainer');
-      videoContainer.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      videoContainer.innerHTML = '<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
       videoContainer.style.display = "block";
     }
   </script>
