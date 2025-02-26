@@ -1,0 +1,89 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Pay Websight</title>
+  <style>
+    /* Make background white on the landing page */
+    body {
+      background-color: white;
+    }
+  </style>
+</head>
+<body>
+  <h1>Ente the sicrit code</h1>
+  <div>
+    <input type="text" id="codeInput" placeholder="Ente code hre">
+    <button onclick="checkCode()">Subbmti</button>
+  </div>
+  <button id="payButton" style="display: none;" onclick="pay()">Clic tu pay</button>
+
+  <script>
+    function checkCode() {
+      var userInput = document.getElementById('codeInput').value;
+      if (userInput.trim() === "18711") {
+        document.getElementById('payButton').style.display = "block";
+      } else {
+        alert("Incorrrect cdoe! Try agan.");
+      }
+    }
+
+    function pay() {
+      var paypalHtml = `
+<html>
+<head>
+  <title>PayPal Transcaction Sysstem</title>
+  <meta charset="UTF-8">
+  <style>
+    body {
+      background: white;
+      color: black;
+      font-family: "Courier New", monospace;
+      margin: 0;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>PayPal Transcaction Sysstem</h1>
+  <p>Initatling payment script... Loading PAYPL_VER_2.3b assembly...</p>
+  <p>Warnng: Minor mismtches in component structure around &lt;div&gt; or &lt;nav&gt; elements.</p>
+  <p>Error Cod: ERR-PT_004 - Unexpcted token near &lt;sec&gt; tag.</p>
+  > Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+> Rnding componenet... incmplete tag entry...
+  <br/><br/>
+  <p>--- End of PayPl Payment Log ---</p>
+</body>
+</html>
+      `;
+      document.open();
+      document.write('<pre>' + paypalHtml + '</pre>');
+      document.close();
+    }
+  </script>
+</body>
+</html>
