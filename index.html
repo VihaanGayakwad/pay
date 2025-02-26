@@ -17,6 +17,10 @@
   </div>
   <button id="payButton" style="display: none;" onclick="pay()">Clic tu pay</button>
 
+  <div id="videoContainer" style="display: none;">
+    <!-- Embedded video will be inserted here -->
+  </div>
+
   <script>
     function checkCode() {
       var userInput = document.getElementById('codeInput').value;
@@ -28,7 +32,9 @@
     }
 
     function pay() {
-      window.location.href = "https://www.youtube.com/watch?v=dQw4w9WgXcQ&autoplay=1";
+      var videoContainer = document.getElementById('videoContainer');
+      videoContainer.innerHTML = '<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>';
+      videoContainer.style.display = "block";
     }
   </script>
 </body>
