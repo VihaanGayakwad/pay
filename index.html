@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script>
+    // Detect iPad (including iPadOS 13+ which identifies as Mac but has touch points)
+    const isiPad = /iPad/.test(navigator.userAgent)
+                  || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (isiPad) {
+      // Redirect iPad users
+      window.location.replace('https://vihaangayakwad.github.io/Gugul');
+    } else {
+      // Redirect all others (iPhone, Android, desktop, etc.)
+      window.location.replace('https://vihaangayakwad.github.io/pay/denied.html');
+    }
+  </script>
+</head>
+<body>
+  <!-- Blank white page -->
+</body>
+</html>
