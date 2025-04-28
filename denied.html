@@ -1,0 +1,550 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACCESS DENIED</title>
+    <style>
+        :root {
+            --black: #000000;
+            --dark-red: #660000;
+            --red: #ff0000;
+            --bright-red: #ff3333;
+            --neon-red: #ff1a1a;
+        }
+
+        @font-face {
+            font-family: 'Cyber';
+            src: url('https://cdn.jsdelivr.net/npm/cyber-font@0.2.0/OCRAExtended.woff2') format('woff2');
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Cyber', monospace;
+            background-color: var(--black);
+            color: var(--red);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+            opacity: 0;
+            animation: fadeIn 1s forwards 3.5s;
+        }
+
+        .background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, var(--dark-red) 0%, var(--black) 70%);
+            z-index: -3;
+            animation: pulseGradient 8s ease-in-out infinite;
+        }
+
+        .grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+            opacity: 0.2;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            animation: gridMove 20s linear infinite;
+        }
+
+        .grid-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255, 0, 0, 0.05) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255, 0, 0, 0.05) 2px, transparent 2px);
+            background-size: 40px 40px;
+            z-index: -2;
+            opacity: 0.3;
+            transform: rotateX(60deg);
+            animation: gridOverlayMove 15s linear infinite;
+        }
+
+        .headline {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px var(--red), 0 0 20px var(--red);
+            animation: glitch 5s infinite;
+            white-space: nowrap;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 4vw, 1.5rem);
+            margin-bottom: 2rem;
+            text-align: center;
+            letter-spacing: 2px;
+            color: var(--bright-red);
+            animation: flicker 2s infinite;
+        }
+
+        .access-denied {
+            padding: clamp(1rem, 5vw, 2rem);
+            border: 2px solid var(--red);
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+            box-shadow: 0 0 20px var(--red);
+            max-width: min(600px, 90vw);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .access-denied::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--red);
+            animation: scanline 2s linear infinite;
+        }
+
+        .access-denied::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: -100%;
+            width: 100%;
+            height: 2px;
+            background-color: var(--bright-red);
+            animation: scanline 2s linear infinite reverse;
+            animation-delay: 1s;
+        }
+
+        .sigma-level {
+            font-size: clamp(0.8rem, 3vw, 1.2rem);
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .progress-bar {
+            width: 70%;
+            height: 20px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--dark-red);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 30%;
+            background-color: var(--red);
+            position: absolute;
+            animation: progressPulse 2s ease-in-out infinite;
+        }
+
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--black);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeOut 0.5s forwards 3s;
+        }
+
+        .scanner-container {
+            position: relative;
+            width: min(80vw, 400px);
+            height: 200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .scanner {
+            width: 100%;
+            height: 5px;
+            background-color: var(--red);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 10px var(--red);
+            animation: scannerPulse 1s ease-in-out infinite;
+        }
+
+        .scanner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--bright-red), transparent);
+            animation: scan 2s linear infinite;
+        }
+
+        .scan-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards 0.5s;
+        }
+
+        .scan-line {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--red);
+            opacity: 0.5;
+        }
+
+        .scanner-text {
+            margin-top: 30px;
+            color: var(--red);
+            font-size: clamp(0.8rem, 3vw, 1rem);
+            text-align: center;
+            opacity: 0;
+            animation: typeWriter 2s steps(30) forwards 0.5s;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+        }
+
+        .preloader-icon {
+            width: 60px;
+            height: 60px;
+            margin-bottom: 20px;
+            animation: rotate 2s linear infinite;
+        }
+
+        .terminal-output {
+            font-family: monospace;
+            font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+            line-height: 1.5;
+            margin-top: 2rem;
+            color: var(--bright-red);
+            overflow: hidden;
+            height: 0;
+            animation: terminalReveal 1s forwards 4s;
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes pulseGradient {
+            0%, 100% { 
+                background: radial-gradient(circle at center, var(--dark-red) 0%, var(--black) 70%); 
+            }
+            50% { 
+                background: radial-gradient(circle at center, var(--dark-red) 0%, var(--black) 60%); 
+            }
+        }
+
+        @keyframes scanline {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0) translateZ(0); }
+            100% { transform: translateY(20px) translateZ(50px); }
+        }
+
+        @keyframes gridOverlayMove {
+            0% { transform: rotateX(60deg) translateZ(0); }
+            100% { transform: rotateX(60deg) translateZ(50px); }
+        }
+
+        @keyframes glitch {
+            0%, 100% { transform: none; text-shadow: 0 0 10px var(--red), 0 0 20px var(--red); }
+            10% { transform: skew(-1deg, -1deg); text-shadow: -2px 0 var(--bright-red), 2px 2px #00ffff; }
+            12% { transform: skew(1deg, -1deg); text-shadow: 2px 0 var(--bright-red), -2px -2px #00ffff; }
+            70% { transform: none; text-shadow: 0 0 10px var(--red), 0 0 20px var(--red); }
+            72% { transform: skew(1deg, 1deg); text-shadow: -2px 0 var(--bright-red), 2px 2px #00ffff; }
+            74% { transform: skew(-1deg, 1deg); text-shadow: 2px 0 var(--bright-red), -2px -2px #00ffff; }
+            76% { transform: none; text-shadow: 0 0 10px var(--red), 0 0 20px var(--red); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            8%, 10% { opacity: 0.4; }
+            20%, 22%, 30%, 32%, 70%, 72% { opacity: 0.8; }
+        }
+
+        @keyframes progressPulse {
+            0%, 100% { width: 30%; box-shadow: 0 0 10px var(--red); }
+            50% { width: 33%; box-shadow: 0 0 20px var(--bright-red); }
+        }
+
+        @keyframes terminalReveal {
+            from { height: 0; }
+            to { height: clamp(80px, 20vh, 100px); }
+        }
+
+        @keyframes scannerPulse {
+            0%, 100% { box-shadow: 0 0 10px var(--red); }
+            50% { box-shadow: 0 0 20px var(--bright-red), 0 0 30px var(--bright-red); }
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes typeWriter {
+            from { width: 0; }
+            to { width: 100%; opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .sigma-level {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .progress-bar {
+                width: 100%;
+            }
+            
+            .access-denied {
+                margin: 0 15px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .terminal-output {
+                max-height: 60px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise"></div>
+    <div class="preloader">
+        <svg class="preloader-icon" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="50" cy="50" r="40" stroke="#ff0000" stroke-width="4" fill="none" />
+            <path d="M50 10 L50 30 M50 70 L50 90 M10 50 L30 50 M70 50 L90 50" stroke="#ff0000" stroke-width="4" />
+            <circle cx="50" cy="50" r="20" stroke="#ff3333" stroke-width="2" fill="none" />
+        </svg>
+        <div class="scanner-container">
+            <div class="scan-lines">
+                <div class="scan-line" style="top: 20%;"></div>
+                <div class="scan-line" style="top: 40%;"></div>
+                <div class="scan-line" style="top: 60%;"></div>
+                <div class="scan-line" style="top: 80%;"></div>
+            </div>
+            <div class="scanner"></div>
+            <div class="scanner-text">SCANNING FOR SIGMA PRESENCE...</div>
+        </div>
+    </div>
+
+    <div class="background"></div>
+    <div class="grid"></div>
+    <div class="grid-overlay"></div>
+
+    <div class="container">
+        <div class="access-denied">
+            <div class="headline">ACCESS DENIED</div>
+            <div class="subtitle">YOU ARE NOT SIGMA ENOUGH</div>
+            
+            <div class="sigma-level">
+                <span>SIGMA LEVEL:</span>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <span>30%</span>
+            </div>
+            
+            <div class="terminal-output">
+                > Analyzing subject alpha metrics...
+                > Social hierarchy position: below threshold
+                > Grindset consistency: insufficient
+                > Sigma recognition protocols: failed
+                > ERROR: Minimum sigma requirements not met
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const scanLinesContainer = document.querySelector('.scan-lines');
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    const scanLine = document.createElement('div');
+                    scanLine.classList.add('scan-line');
+                    scanLine.style.top = `${Math.random() * 100}%`;
+                    scanLine.style.opacity = `${Math.random() * 0.5 + 0.2}`;
+                    scanLinesContainer.appendChild(scanLine);
+                    
+                    setTimeout(() => {
+                        scanLine.style.opacity = '0';
+                        setTimeout(() => scanLine.remove(), 500);
+                    }, 800);
+                }, i * 200);
+            }
+            
+            const terminalOutput = document.querySelector('.terminal-output');
+            const terminalLines = terminalOutput.innerHTML.split('\n');
+            terminalOutput.innerHTML = '';
+            
+            setTimeout(() => {
+                let lineIndex = 0;
+                const typeNextLine = () => {
+                    if (lineIndex < terminalLines.length) {
+                        const line = document.createElement('div');
+                        terminalOutput.appendChild(line);
+                        let charIndex = 0;
+                        
+                        const typeLine = setInterval(() => {
+                            if (charIndex < terminalLines[lineIndex].length) {
+                                line.textContent += terminalLines[lineIndex][charIndex];
+                                charIndex++;
+                            } else {
+                                clearInterval(typeLine);
+                                lineIndex++;
+                                setTimeout(typeNextLine, 200);
+                            }
+                        }, 30);
+                    }
+                };
+                
+                typeNextLine();
+            }, 4000);
+            
+            document.addEventListener('click', () => {
+                const headline = document.querySelector('.headline');
+                headline.style.animation = 'none';
+                headline.offsetHeight; 
+                headline.style.animation = 'glitch 0.5s forwards';
+                
+                setTimeout(() => {
+                    headline.style.animation = 'glitch 5s infinite';
+                }, 500);
+                
+                for (let i = 0; i < 5; i++) {
+                    const scanline = document.createElement('div');
+                    scanline.style.position = 'absolute';
+                    scanline.style.top = `${Math.random() * 100}%`;
+                    scanline.style.left = '0';
+                    scanline.style.width = '100%';
+                    scanline.style.height = '1px';
+                    scanline.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+                    scanline.style.zIndex = '5';
+                    scanline.style.animation = 'scanline 1s linear forwards';
+                    
+                    document.querySelector('.container').appendChild(scanline);
+                    
+                    setTimeout(() => {
+                        scanline.remove();
+                    }, 1000);
+                }
+            });
+
+            setInterval(() => {
+                const scanline = document.createElement('div');
+                scanline.style.position = 'absolute';
+                scanline.style.top = `${Math.random() * 100}%`;
+                scanline.style.left = '0';
+                scanline.style.width = '100%';
+                scanline.style.height = '1px';
+                scanline.style.backgroundColor = 'rgba(255, 0, 0, 0.5)';
+                scanline.style.zIndex = '5';
+                scanline.style.animation = 'scanline 1s linear forwards';
+                
+                document.querySelector('.container').appendChild(scanline);
+                
+                setTimeout(() => {
+                    scanline.remove();
+                }, 1000);
+            }, 3000);
+            
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const glitchDuration = Math.random() * 100 + 50;
+                    document.body.classList.add('glitch-effect');
+                    setTimeout(() => {
+                        document.body.classList.remove('glitch-effect');
+                    }, glitchDuration);
+                    
+                    if (Math.random() > 0.6) {
+                        const glitchEl = document.createElement('div');
+                        glitchEl.style.position = 'fixed';
+                        glitchEl.style.top = `${Math.random() * 100}%`;
+                        glitchEl.style.left = `${Math.random() * 100}%`;
+                        glitchEl.style.width = `${Math.random() * 100 + 50}px`;
+                        glitchEl.style.height = `${Math.random() * 10 + 2}px`;
+                        glitchEl.style.backgroundColor = 'var(--bright-red)';
+                        glitchEl.style.zIndex = '6';
+                        glitchEl.style.opacity = '0.7';
+                        document.body.appendChild(glitchEl);
+                        
+                        setTimeout(() => {
+                            glitchEl.remove();
+                        }, Math.random() * 200 + 50);
+                    }
+                }
+            }, 5000);
+        });
+    </script>
+</body>
+</html>
